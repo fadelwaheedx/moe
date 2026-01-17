@@ -12,12 +12,16 @@ final class Prompt {
     @Relationship(inverse: \Category.prompts)
     var category: Category?
 
-    init(title: String, content: String, isFavorite: Bool = false, category: Category? = nil) {
+    @Relationship(deleteRule: .nullify)
+    var tags: [Tag]? = []
+
+    init(title: String, content: String, isFavorite: Bool = false, category: Category? = nil, tags: [Tag] = []) {
         self.id = UUID()
         self.title = title
         self.content = content
         self.createdAt = Date()
         self.isFavorite = isFavorite
         self.category = category
+        self.tags = tags
     }
 }

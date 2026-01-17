@@ -6,7 +6,8 @@ struct PromptVaultApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Prompt.self,
-            Category.self
+            Category.self,
+            Tag.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -22,5 +23,16 @@ struct PromptVaultApp: App {
             ContentView()
         }
         .modelContainer(sharedModelContainer)
+
+        MenuBarExtra("PromptVault", systemImage: "text.append") {
+            MenuBarList()
+                .modelContainer(sharedModelContainer)
+        }
+        .menuBarExtraStyle(.window)
+
+        Window("About PromptVault", id: "about") {
+            AboutView()
+        }
+        .windowResizability(.contentSize)
     }
 }

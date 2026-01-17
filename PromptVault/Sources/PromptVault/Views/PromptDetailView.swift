@@ -57,12 +57,30 @@ struct PromptDetailView: View {
                     // Content Preview
                     GroupBox(label: Label("Preview", systemImage: "doc.text")) {
                         ScrollView {
-                            Text(filledContent)
+                            // Using localized string interpolation for Markdown support
+                            Text(LocalizedStringKey(filledContent))
                                 .font(.body)
                                 .textSelection(.enabled)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding()
                         }
+                    }
+
+                    // Tags Display
+                    if let tags = prompt.tags, !tags.isEmpty {
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack {
+                                ForEach(tags) { tag in
+                                    Text(tag.name)
+                                        .font(.caption)
+                                        .padding(.horizontal, 8)
+                                        .padding(.vertical, 4)
+                                        .background(.ultraThinMaterial)
+                                        .cornerRadius(8)
+                                }
+                            }
+                        }
+                        .padding(.vertical, 4)
                     }
 
                     // Actions

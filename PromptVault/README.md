@@ -5,11 +5,14 @@ PromptVault is a native macOS application for managing and organizing text promp
 ## Features
 
 - **Prompt Management**: Create, edit, and delete text prompts.
-- **Organization**: Group prompts into custom categories.
+- **Organization**: Group prompts into custom categories and tags.
 - **Favorites**: Quickly access your most used prompts.
 - **Variable Injection**: Support for `{{variable}}` syntax. The app automatically detects variables and provides input fields to fill them.
-- **Native macOS UI**: Built with SwiftUI for a seamless Mac experience.
-- **Local Storage**: All data is stored locally on your device using SwiftData.
+- **Quick Actions**: Copy prompt content directly from the list, or via the Menu Bar helper.
+- **Drag & Drop**: Drag prompts to categories to organize them.
+- **Import/Export**: Backup your vault to JSON or import from other sources.
+- **Menu Bar App**: Access your prompts quickly from the system menu bar.
+- **Native macOS UI**: Built with SwiftUI for a seamless Mac experience, including Dark Mode support.
 
 ## How to Run
 
@@ -30,12 +33,13 @@ Since this project was generated as a Swift Package, you can open it directly in
 ## Architecture
 
 - **SwiftUI**: For the user interface.
-- **SwiftData**: For local persistence of `Prompt` and `Category` models.
+- **SwiftData**: For local persistence of `Prompt`, `Category`, and `Tag` models.
 - **MVVM-like**: Separation of Views and Data Models.
 
 ## Folder Structure
 
 - `Sources/PromptVault/PromptVaultApp.swift`: App entry point.
-- `Sources/PromptVault/Models/`: Data models (`Prompt`, `Category`).
-- `Sources/PromptVault/Views/`: UI components (`ContentView`, `SidebarView`, etc.).
-- `Sources/PromptVault/Utils/`: Helper logic (`VariableInjector`).
+- `Sources/PromptVault/Models/`: Data models (`Prompt`, `Category`, `Tag`).
+- `Sources/PromptVault/Views/`: UI components (`ContentView`, `SidebarView`, `MenuBarList`, etc.).
+- `Sources/PromptVault/Utils/`: Helper logic (`VariableInjector`, `DataTransferManager`).
+- `Sources/PromptVault/Assets.xcassets`: App icons and assets.

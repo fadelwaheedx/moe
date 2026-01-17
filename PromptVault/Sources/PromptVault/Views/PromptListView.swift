@@ -9,6 +9,7 @@ struct PromptListView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var searchText = ""
     @State private var showingAddPrompt = false
+    @State private var copiedId: UUID?
 
     var filteredPrompts: [Prompt] {
         let filtered: [Prompt]
@@ -50,10 +51,33 @@ struct PromptListView: View {
             }
             .tag(prompt)
             .contextMenu {
+                Button {
+                    copyToClipboard(prompt)
+                } label: {
+                    Label("Copy Content", systemImage: "doc.on.doc")
+                }
+
                 Button(role: .destructive) {
                     deletePrompt(prompt)
                 } label: {
                     Label("Delete", systemImage: "trash")
+                }
+            }
+            .draggable(prompt.id.uuidString)
+            .swipeActions(edge: .leading) {
+                Button {
+                    copyToClipboard(prompt)
+                } label: {
+                    Label("Copy", systemImage: "doc.on.doc")
+                }
+                .tint(.blue)
+            }
+            .overlay(alignment: .trailing) {
+                if copiedId == prompt.id {
+                    Image(systemName: "checkmark.circle.fill")
+                        .foregroundColor(.green)
+                        .padding(.trailing, 4)
+                        .transition(.scale.combined(with: .opacity))
                 }
             }
         }
@@ -63,10 +87,27 @@ struct PromptListView: View {
                 Button(action: { showingAddPrompt = true }) {
                     Label("Add Prompt", systemImage: "plus")
                 }
+                .keyboardShortcut("n", modifiers: .command)
             }
         }
         .sheet(isPresented: $showingAddPrompt) {
             PromptEditorView(prompt: nil)
+        }
+    }
+
+    private func copyToClipboard(_ prompt: Prompt) {
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.setString(prompt.content, forType: .string)
+
+        withAnimation {
+            copiedId = prompt.id
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            withAnimation {
+                copiedId = nil
+            }
         }
     }
 
